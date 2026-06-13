@@ -32,7 +32,7 @@ app.use((req, res, next) => {
 });
 
 // --- Database Setup ---
-const db = new Database("studyflow.db", { timeout: 5000 });
+const db = new Database(path.join(__dirname, "studyflow.db"), { timeout: 5000 });
 db.pragma('foreign_keys = ON');
 
 // Health check
@@ -635,8 +635,6 @@ app.get("/api/optimizer/plan", authenticateToken, async (req: any, res) => {
 
 // --- Vite Integration ---
 async function startServer() {
-  // Register API routes here or ensure they are already registered
-  
   // Catch-all for missing API routes to prevent HTML fallback
   app.all("/api/*", (req, res) => {
     console.log(`[API 404] ${req.method} ${req.url}`);
@@ -650,9 +648,9 @@ async function startServer() {
     });
     app.use(vite.middlewares);
   } else {
-    app.use(express.static(path.join(__dirname, "dist")));
+    app.use(express.static(path.join(__dirname, "../dist")));
     app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "dist", "index.html"));
+      res.sendFile(path.join(__dirname, "../dist", "index.html"));
     });
   }
 
