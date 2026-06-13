@@ -1,5 +1,4 @@
 import express from "express";
-import { createServer as createViteServer } from "vite";
 import Database from "better-sqlite3";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcryptjs";
@@ -633,7 +632,7 @@ app.get("/api/optimizer/plan", authenticateToken, async (req: any, res) => {
   }
 });
 
-// --- Vite Integration ---
+// --- Server Startup ---
 async function startServer() {
   // Catch-all for missing API routes to prevent HTML fallback
   app.all("/api/*", (req, res) => {
@@ -642,19 +641,38 @@ async function startServer() {
   });
 
   if (process.env.NODE_ENV !== "production") {
-    const vite = await createViteServer({
-      server: { middlewareMode: true },
-      appType: "spa",
-    });
-    app.use(vite.middlewares);
+    // Local dev: dynamically import Vite and use as middleware
+    try {
+      const { createServer: createViteServer } = await import("vite");
+      const vite = await createViteServer({
+        server: { middlewareMode: true },
+        appType: "spa",
+      });
+      app.use(vite.middlewares);
+      console.log("Vite dev server middleware attached.");
+    } catch (e) {
+      console.warn("Vite not available, running as API-only server.");
+    }
   } else {
-    app.use(express.static(path.join(__dirname, "../dist")));
-    app.get("*", (req, res) => {
-      res.sendFile(path.join(__dirname, "../dist", "index.html"));
-    });
+    // Production: serve static frontend if dist exists
+    const distPath = path.join(__dirname, "../dist");
+    try {
+      const fs = await import("fs");
+      if (fs.existsSync(distPath)) {
+        app.use(express.static(distPath));
+        app.get("*", (req, res) => {
+          res.sendFile(path.join(distPath, "index.html"));
+        });
+        console.log("Serving static frontend from", distPath);
+      } else {
+        console.log("No dist/ found — running as API-only server.");
+      }
+    } catch {
+      console.log("Running as API-only server.");
+    }
   }
 
-  app.listen(PORT, "0.0.0.0", () => {
+  app.listen(Number(PORT), "0.0.0.0", () => {
     console.log(`Server running on http://localhost:${PORT}`);
   });
 }
