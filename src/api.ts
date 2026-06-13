@@ -34,9 +34,11 @@ const handleResponse = async (res: Response, endpoint: string) => {
   return res;
 };
 
+const API_BASE_URL = import.meta.env.VITE_API_URL || '';
+
 export const api = {
   async get(endpoint: string) {
-    const res = await fetch(endpoint, { headers: getAuthHeader() });
+    const res = await fetch(API_BASE_URL + endpoint, { headers: getAuthHeader() });
     await handleResponse(res, endpoint);
     const text = await res.text();
     if (!text) return {};
@@ -52,7 +54,7 @@ export const api = {
     }
   },
   async post(endpoint: string, body: any) {
-    const res = await fetch(endpoint, {
+    const res = await fetch(API_BASE_URL + endpoint, {
       method: 'POST',
       headers: { ...getAuthHeader(), 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -72,7 +74,7 @@ export const api = {
     }
   },
   async patch(endpoint: string, body: any) {
-    const res = await fetch(endpoint, {
+    const res = await fetch(API_BASE_URL + endpoint, {
       method: 'PATCH',
       headers: { ...getAuthHeader(), 'Content-Type': 'application/json' },
       body: JSON.stringify(body)
@@ -87,7 +89,7 @@ export const api = {
     }
   },
   async delete(endpoint: string) {
-    const res = await fetch(endpoint, {
+    const res = await fetch(API_BASE_URL + endpoint, {
       method: 'DELETE',
       headers: getAuthHeader()
     });
