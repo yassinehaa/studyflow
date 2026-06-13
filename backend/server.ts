@@ -643,6 +643,7 @@ async function startServer() {
   if (process.env.NODE_ENV !== "production") {
     // Local dev: dynamically import Vite and use as middleware
     try {
+      // @ts-ignore: vite is only installed in dev
       const { createServer: createViteServer } = await import("vite");
       const vite = await createViteServer({
         server: { middlewareMode: true },
