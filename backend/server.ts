@@ -37,7 +37,8 @@ app.use((req, res, next) => {
 });
 
 // --- Database Setup ---
-const db = new Database(path.join(__dirname, "studyflow.db"), { timeout: 5000 });
+const dbPath = process.env.NODE_ENV === "production" ? path.join(process.cwd(), "studyflow.db") : path.join(__dirname, "studyflow.db");
+const db = new Database(dbPath, { timeout: 5000 });
 db.pragma('foreign_keys = ON');
 
 // Health check
