@@ -47,9 +47,9 @@ export function AICoachChat({ optimizerData, initialAdvice }: AICoachChatProps) 
     setIsLoading(true);
 
     try {
-      const apiKey = process.env.GROQ_API_KEY;
+      const apiKey = process.env.VITE_GROQ_API_KEY;
       if (!apiKey) {
-        setMessages(prev => [...prev, { role: 'assistant', content: "Error: GROQ_API_KEY is not configured in environment variables." }]);
+        setMessages(prev => [...prev, { role: 'assistant', content: "Error: VITE_GROQ_API_KEY is not configured in environment variables." }]);
         return;
       }
 
@@ -93,7 +93,7 @@ MANDATORY: Respond in the exact same language as the user's latest query/message
       setMessages(prev => [...prev, { role: 'assistant', content: assistantMessage || "I'm sorry, I couldn't process that request." }]);
     } catch (error: any) {
       console.error("AI Chat Error:", error);
-      setMessages(prev => [...prev, { role: 'assistant', content: "Sorry, I encountered an error while thinking. Please check your GROQ_API_KEY configuration." }]);
+      setMessages(prev => [...prev, { role: 'assistant', content: "Sorry, I encountered an error while thinking. Please check your VITE_GROQ_API_KEY configuration." }]);
     } finally {
       setIsLoading(false);
     }

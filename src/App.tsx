@@ -141,9 +141,9 @@ export default function App() {
   };
 
   const generateAIAdvice = async (riskData: any) => {
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = process.env.VITE_GROQ_API_KEY;
     if (!apiKey) {
-      setAiAdvice("AI Coach: Please configure your GROQ_API_KEY.");
+      setAiAdvice("AI Coach: Please configure your VITE_GROQ_API_KEY.");
       return;
     }
 
@@ -579,7 +579,7 @@ function AddSubjectModal({ onAdd }: { onAdd: () => void }) {
       });
 
       if (autoGenerate && subjectRes.id) {
-        const apiKey = process.env.GROQ_API_KEY;
+        const apiKey = process.env.VITE_GROQ_API_KEY;
         if (apiKey) {
           const prompt = `Break down the subject "${subjectName}" into 6-10 core topics for exam preparation.
 For each topic, provide a name, a difficulty level (1-5), and estimated total study minutes required.
@@ -621,7 +621,7 @@ Example format:
       onAdd();
     } catch (err: any) {
       console.error("Subject auto-generation error:", err);
-      setError("AI Generation failed. The subject was created, but we couldn't auto-generate topics. Please check your GROQ_API_KEY.");
+      setError("AI Generation failed. The subject was created, but we couldn't auto-generate topics. Please check your VITE_GROQ_API_KEY.");
     } finally {
       setIsSubmitting(false);
     }
@@ -750,9 +750,9 @@ function SubjectList({ subjects, onUpdate }: { subjects: any[], onUpdate: () => 
 
     setLoadingGoals(topicId);
     try {
-      const apiKey = process.env.GROQ_API_KEY;
+      const apiKey = process.env.VITE_GROQ_API_KEY;
       if (!apiKey) {
-        setTopicGoals(prev => ({ ...prev, [topicId]: ["Groq API key not configured. Unable to generate goals."] }));
+        setTopicGoals(prev => ({ ...prev, [topicId]: ["VITE_GROQ_API_KEY not configured. Unable to generate goals."] }));
         return;
       }
 
@@ -1355,9 +1355,9 @@ function AddTopicForm({ subjectId, onAdd }: { subjectId: number, onAdd: () => vo
   const handleAiBreakdown = async () => {
     if (!topicName.trim()) return;
 
-    const apiKey = process.env.GROQ_API_KEY;
+    const apiKey = process.env.VITE_GROQ_API_KEY;
     if (!apiKey) {
-      alert("Please configure your GROQ_API_KEY to use AI breakdown.");
+      alert("Please configure your VITE_GROQ_API_KEY to use AI breakdown.");
       return;
     }
 
@@ -1392,7 +1392,7 @@ Example format:
       setSuggestions(subtopics);
     } catch (error: any) {
       console.error("AI Breakdown Error:", error);
-      alert("Failed to generate subtopics. Please check your GROQ_API_KEY configuration and try again. " + (error.message || ""));
+      alert("Failed to generate subtopics. Please check your VITE_GROQ_API_KEY configuration and try again. " + (error.message || ""));
     } finally {
       setIsBreakingDown(false);
     }

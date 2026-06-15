@@ -1,9 +1,9 @@
 import dotenv from 'dotenv';
 dotenv.config();
 
-const apiKey = process.env.GROQ_API_KEY;
+const apiKey = process.env.VITE_GROQ_API_KEY;
 if (!apiKey) {
-  console.error("GROQ_API_KEY is not defined in the environment or .env file.");
+  console.error("VITE_GROQ_API_KEY is not defined in the environment or .env file.");
   process.exit(1);
 }
 

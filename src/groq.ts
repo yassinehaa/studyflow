@@ -12,9 +12,9 @@ export interface GroqOptions {
 }
 
 export async function callGroq(messages: GroqMessage[], options: GroqOptions = {}): Promise<string> {
-  const apiKey = process.env.GROQ_API_KEY;
+  const apiKey = process.env.VITE_GROQ_API_KEY;
   if (!apiKey) {
-    throw new Error("GROQ_API_KEY is not configured. Please add it to your .env file.");
+    throw new Error("VITE_GROQ_API_KEY is not configured. Please add it to your .env file.");
   }
 
   const response = await fetch("https://api.groq.com/openai/v1/chat/completions", {

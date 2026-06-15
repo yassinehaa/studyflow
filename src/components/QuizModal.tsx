@@ -40,9 +40,9 @@ export function QuizModal({ topicId, topicName, onClose, onComplete }: QuizModal
   const generateQuiz = async () => {
     setIsLoading(true);
     try {
-      const apiKey = process.env.GROQ_API_KEY;
+      const apiKey = process.env.VITE_GROQ_API_KEY;
       if (!apiKey) {
-        throw new Error("GROQ_API_KEY is not configured.");
+        throw new Error("VITE_GROQ_API_KEY is not configured.");
       }
 
       const prompt = `Generate a 5-question multiple choice quiz for the topic "${topicName}". 
@@ -82,7 +82,7 @@ Example format:
       setQuiz(quizData);
     } catch (error: any) {
       console.error("Failed to generate quiz:", error);
-      alert("Failed to generate quiz. Please check your GROQ_API_KEY configuration. " + (error.message || ""));
+      alert("Failed to generate quiz. Please check your VITE_GROQ_API_KEY configuration. " + (error.message || ""));
       onClose();
     } finally {
       setIsLoading(false);
