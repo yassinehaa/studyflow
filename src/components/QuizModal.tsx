@@ -40,7 +40,7 @@ export function QuizModal({ topicId, topicName, onClose, onComplete }: QuizModal
   const generateQuiz = async () => {
     setIsLoading(true);
     try {
-      const apiKey = process.env.VITE_GROQ_API_KEY;
+      const apiKey = import.meta.env.VITE_GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
       if (!apiKey) {
         throw new Error("VITE_GROQ_API_KEY is not configured.");
       }

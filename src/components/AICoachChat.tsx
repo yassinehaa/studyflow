@@ -47,7 +47,7 @@ export function AICoachChat({ optimizerData, initialAdvice }: AICoachChatProps) 
     setIsLoading(true);
 
     try {
-      const apiKey = process.env.VITE_GROQ_API_KEY;
+      const apiKey = import.meta.env.VITE_GROQ_API_KEY || process.env.VITE_GROQ_API_KEY;
       if (!apiKey) {
         setMessages(prev => [...prev, { role: 'assistant', content: "Error: VITE_GROQ_API_KEY is not configured in environment variables." }]);
         return;
